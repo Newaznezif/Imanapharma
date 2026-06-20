@@ -5,5 +5,9 @@ build/
 .DS_Store
 .vscode/
 .idea/
+*.log
+*.db
+*.db-shm
+*.db-wal
 npm-debug.log
 yarn-error.log

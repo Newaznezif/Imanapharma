@@ -11,19 +11,25 @@ Prerequisites: Docker, Git, GitHub account.
 - Or run all services with Docker Compose:
   - `docker-compose up --build`
 
-Codespaces
+Contributing
+
+If you want to contribute to this project:
+
+- Fork the repository and create a feature branch from `main`.
+- Install each package locally and confirm it builds.
+- Open a pull request with a clear title and description.
+- Ensure changes are limited to `ImanaPharma` project files.
+
+Development
 
 This repository includes a `.devcontainer` configuration so you can start coding in GitHub Codespaces or VS Code Remote - Containers.
 
 To open in Codespaces: open the repository on GitHub and click "Code" → "Open with Codespaces".
 
-Adding collaborators
-
-To invite collaborators via the GitHub web UI go to Settings → Manage access → Invite teams or people. Alternatively, with the GitHub CLI:
+If you use GitHub CLI:
 
 ```
-gh repo add-collaborator Newaznezif --permission write
-gh repo add-collaborator <username-or-email> --permission write
+gh repo add-collaborator <username> --permission write
 ```
 
 Notes
