@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+  }
+}
+
+/* Professional Enterprise Panel Styling */
+.glass-panel {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+}
+
+.glass-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  background: #ffffff;
+  border-color: #007A9A;
+  box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.glass-input {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  transition: all 0.15s ease-in-out;
+}
+
+.glass-input:focus {
+  border-color: #007A9A;
+  box-shadow: 0 0 0 3px rgba(0, 122, 154, 0.15);
+  outline: none;
+  background: #ffffff;
+}
+
+/* Clean status badges */
+.glow-badge-green {
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.1);
+}
+
+.glow-badge-orange {
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.1);
+}
+
+/* Custom Scrollbars for light theme */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

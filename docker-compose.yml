@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  # 1. Cloud Postgres Database
+  postgres_db:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: pharmacy_cloud
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d pharmacy_cloud"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. Central Redis Cache
+  redis_cache:
+    image: redis:7-alpine
+    container_name: redis_cache
+    ports:
+      - "6379:6379"
+
+  # 3. Central Cloud API Server
+  cloud_api:
+    build:
+      context: .
+      dockerfile: cloud-api/Dockerfile
+    container_name: cloud_api
+    ports:
+      - "5000:5000"
+    environment:
+      PORT: 5000
+      DB_HOST: postgres_db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_DATABASE: pharmacy_cloud
+      JWT_SECRET: super_secret_cloud_key_1234
+      JWT_REFRESH_SECRET: super_secret_refresh_key_5678
+      REDIS_URL: redis://redis_cache:6379
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+      redis_cache:
+        condition: service_started
+
+  # 4. Branch Edge API Node (North Branch)
+  edge_api_north:
+    build:
+      context: .
+      dockerfile: edge-api/Dockerfile
+    container_name: edge_api_north
+    ports:
+      - "5001:5001"
+    environment:
+      PORT: 5001
+      BRANCH_ID: 22222222-2222-2222-2222-222222222222
+      CLOUD_API_URL: http://cloud_api:5000
+      JWT_SECRET: super_secret_cloud_key_1234
+      SQLITE_DB_PATH: /data/branch-edge.db
+    volumes:
+      - edge_data_north:/data
+    depends_on:
+      - cloud_api
+
+  # 5. Frontend POS & Admin Client Terminal
+  frontend_dashboard:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: frontend_dashboard
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+    depends_on:
+      - edge_api_north
+      - cloud_api
+
+volumes:
+  pg_data:
+  edge_data_north:
