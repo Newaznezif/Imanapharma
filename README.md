@@ -20,6 +20,15 @@ If you want to contribute to this project:
 - Open a pull request with a clear title and description.
 - Ensure changes are limited to `ImanaPharma` project files.
 
+For full contribution guidance, see `CONTRIBUTING.md`.
+
+Community
+
+- `CODE_OF_CONDUCT.md` describes expected behavior for contributors.
+- `SECURITY.md` explains how to report security issues.
+- `.github/PULL_REQUEST_TEMPLATE.md` helps contributors open quality PRs.
+- `.github/ISSUE_TEMPLATE/` contains templates for bug reports, feature requests, and support.
+
 Development
 
 This repository includes a `.devcontainer` configuration so you can start coding in GitHub Codespaces or VS Code Remote - Containers.
@@ -33,6 +42,11 @@ This is a monorepo and the frontend app lives in `frontend/`. Deployments must b
 - GitHub Pages: this repo includes a workflow that builds `frontend` and publishes `frontend/dist` to the `gh-pages` branch.
 - Other hosts: set the publish directory to `frontend/dist`, and run `npm ci` plus `npm run build` from the `frontend/` folder.
 - Do not publish the repository root as a static site; that will serve `README.md` instead of the app.
+
+Continuous Integration
+
+This repository now includes a CI workflow at `.github/workflows/ci.yml`.
+It runs on push and pull request events and builds `cloud-api`, `edge-api`, and `frontend`.
 
 If you use GitHub CLI:
 
