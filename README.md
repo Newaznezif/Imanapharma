@@ -26,6 +26,14 @@ This repository includes a `.devcontainer` configuration so you can start coding
 
 To open in Codespaces: open the repository on GitHub and click "Code" → "Open with Codespaces".
 
+Deployment
+
+This is a monorepo and the frontend app lives in `frontend/`. Deployments must build and publish the `frontend/dist` output.
+
+- GitHub Pages: this repo includes a workflow that builds `frontend` and publishes `frontend/dist` to the `gh-pages` branch.
+- Other hosts: set the publish directory to `frontend/dist`, and run `npm ci` plus `npm run build` from the `frontend/` folder.
+- Do not publish the repository root as a static site; that will serve `README.md` instead of the app.
+
 If you use GitHub CLI:
 
 ```
