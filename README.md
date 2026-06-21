@@ -1,5 +1,10 @@
 # Imanapharma
 
+![CI](https://img.shields.io/github/actions/workflow/status/Newaznezif/Imanapharma/ci.yml?branch=main)
+![Pages](https://img.shields.io/github/deployments/Newaznezif/Imanapharma/gh-pages)
+![License](https://img.shields.io/github/license/Newaznezif/Imanapharma)
+
+
 Monorepo for Imanapharma services (cloud-api, edge-api, frontend).
 
 Quick start
