@@ -10,9 +10,7 @@
     "esModuleInterop": true
   },
   "include": [
-    "shared/src/**/*",
-    "cloud-api/src/**/*",
-    "edge-api/src/**/*",
+    "backend/src/**/*",
     "frontend/src/**/*"
   ],
   "exclude": [

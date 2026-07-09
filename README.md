@@ -7,6 +7,10 @@
 
 Monorepo for Imanapharma services (cloud-api, edge-api, frontend).
 
+System overview
+
+- See `docs/SYSTEM_OVERVIEW.md` for the end-to-end architecture, core workflows, role model, strengths, and known gaps.
+
 Quick start
 
 Prerequisites: Docker, Git, GitHub account.

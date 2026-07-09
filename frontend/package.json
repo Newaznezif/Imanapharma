@@ -4,8 +4,6 @@
   "description": "POS and Admin Management Frontend for Distributed Pharmacy System",
   "main": "dist/index.html",
   "scripts": {
-    "predev": "node -e \"const fs=require('fs'); if(fs.existsSync('src/shared')) { fs.rmSync('src/shared', {recursive:true}); } fs.cpSync('../shared/src', 'src/shared', {recursive:true});\"",
-    "prebuild": "node -e \"const fs=require('fs'); if(fs.existsSync('src/shared')) { fs.rmSync('src/shared', {recursive:true}); } fs.cpSync('../shared/src', 'src/shared', {recursive:true});\"",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"

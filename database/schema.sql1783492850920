@@ -1,0 +1,84 @@
+-- Enable UUID extension
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- 1. Pharmacy Settings
+CREATE TABLE settings (
+    id INT PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+    name VARCHAR(255) NOT NULL DEFAULT 'Imana Pharmacy',
+    address VARCHAR(255) NOT NULL DEFAULT 'Central Business District, HQ',
+    phone VARCHAR(50) NOT NULL DEFAULT '+251 11 123 4567',
+    email VARCHAR(100) NOT NULL DEFAULT 'info@imanapharma.com',
+    logo_url VARCHAR(255) NOT NULL DEFAULT '/uploads/logo.png',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. Users
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    username VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role VARCHAR(50) NOT NULL CHECK (role IN ('MANAGER', 'PHARMACIST', 'CASHIER')),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 3. Medicines (Inventory)
+CREATE TABLE medicines (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    drug_name VARCHAR(255) NOT NULL,
+    category VARCHAR(50) NOT NULL CHECK (category IN ('Rx', 'OTC')),
+    strength VARCHAR(100) NOT NULL,
+    price DECIMAL(12, 2) NOT NULL CHECK (price >= 0),
+    quantity INT NOT NULL DEFAULT 0 CHECK (quantity >= 0),
+    expiry_date DATE NOT NULL,
+    manufacturer VARCHAR(255) NOT NULL,
+    batch_number VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 4. Patients
+CREATE TABLE patients (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(255) NOT NULL,
+    allergy_flags JSONB DEFAULT '[]'::jsonb, -- Array of SKUs (or drug names) patient is allergic to
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 5. Orders (Sales lifecycle)
+CREATE TABLE orders (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    order_number SERIAL UNIQUE,
+    patient_name VARCHAR(255) NOT NULL,
+    patient_id UUID REFERENCES patients(id) ON DELETE SET NULL,
+    rx_number VARCHAR(100),
+    total_amount DECIMAL(12, 2) NOT NULL CHECK (total_amount >= 0),
+    payment_method VARCHAR(50) CHECK (payment_method IN ('CASH', 'CARD', 'MOBILE_MONEY')),
+    status VARCHAR(50) NOT NULL DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'COMPLETED')),
+    pharmacist_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    cashier_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    completed_at TIMESTAMP WITH TIME ZONE
+);
+
+-- 6. Order Items
+CREATE TABLE order_items (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    order_id UUID REFERENCES orders(id) ON DELETE CASCADE,
+    medicine_id UUID REFERENCES medicines(id) ON DELETE SET NULL,
+    drug_name VARCHAR(255) NOT NULL,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    price DECIMAL(12, 2) NOT NULL CHECK (price >= 0),
+    total_price DECIMAL(12, 2) NOT NULL CHECK (total_price >= 0)
+);
+
+-- 7. Audit Logs
+CREATE TABLE audit_logs (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    action_type VARCHAR(100) NOT NULL,
+    payload TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
