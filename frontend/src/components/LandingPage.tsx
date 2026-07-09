@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Phone, Mail, MapPin, Clock, Search, User, Truck, CheckCircle2,
   HeartPulse, ShieldCheck, Star, ChevronRight, Package, Baby,
-  Pill, Leaf, Microscope, Sparkles, Menu, X, ArrowRight, Globe,
+  Pill, Leaf, Microscope, Sparkles, Menu, X, ArrowRight,
 } from 'lucide-react';
-import { useI18n, LANGUAGES, type Lang, LanguageSelector } from '../shared/i18n';
+import { useI18n, LanguageSelector } from '../shared/i18n';
 
 interface LandingPageProps {
   onNavigateToLogin: () => void;
