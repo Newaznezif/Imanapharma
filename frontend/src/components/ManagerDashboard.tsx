@@ -3,9 +3,10 @@ import {
   Users, Package, TrendingUp, AlertTriangle, Plus, Edit2, Trash2,
   Upload, BarChart3, Receipt, FileText, CheckCircle2, X,
   HeartPulse, Search, Truck, Download, RefreshCw, Calendar,
-  ShieldAlert, Activity, DollarSign, AlertOctagon, Clock, Filter
+  ShieldAlert, DollarSign, AlertOctagon, Clock, Filter
 } from 'lucide-react';
 import { UserSession } from '../App';
+import PharmacyLogo from '../shared/PharmacyLogo';
 
 interface ManagerDashboardProps {
   session: UserSession;
@@ -403,11 +404,7 @@ export default function ManagerDashboard({ session, onLogout, pharmacyInfo, onRe
       {/* ── Sidebar ─────────────────────────────────────────────────────────── */}
       <aside className="w-60 shrink-0 bg-white border-r border-gray-200 flex flex-col h-full">
         <div className="flex items-center gap-3 px-4 py-4 border-b border-gray-100">
-          <div className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center overflow-hidden bg-white">
-            {pharmacyInfo?.logo_url
-              ? <img src={`http://localhost:5000${pharmacyInfo.logo_url}`} alt="Logo" className="w-full h-full object-contain" />
-              : <Activity size={14} className="text-blue-600" />}
-          </div>
+          <PharmacyLogo logoUrl={pharmacyInfo?.logo_url} size={36} shape="rounded" />
           <div className="min-w-0">
             <h2 className="text-xs font-bold text-gray-900 truncate">{pharmacyInfo?.name || 'ImanaPharma'}</h2>
             <p className="text-[10px] text-blue-600 font-bold uppercase tracking-wider">Manager Portal</p>
@@ -431,8 +428,15 @@ export default function ManagerDashboard({ session, onLogout, pharmacyInfo, onRe
           ))}
         </nav>
 
-        <div className="border-t border-gray-100 p-3">
-          <div className="text-[10px] text-gray-400 font-medium mb-1 px-1">{session.username}</div>
+        <div className="border-t border-gray-100 p-3 flex flex-col gap-2">
+          {/* User profile card with pharmacy logo */}
+          <div className="flex items-center gap-2.5 bg-blue-50 rounded-lg px-2.5 py-2">
+            <PharmacyLogo logoUrl={pharmacyInfo?.logo_url} size={30} shape="circle" />
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-bold text-gray-900 truncate">{session.username}</p>
+              <p className="text-[10px] text-blue-600 font-semibold uppercase tracking-wider">Manager</p>
+            </div>
+          </div>
           <button onClick={onLogout} className="btn bg-white border border-gray-200 text-gray-600 hover:bg-red-50 hover:text-red-600 w-full h-8 text-xs">
             Sign Out
           </button>
@@ -1080,8 +1084,12 @@ export default function ManagerDashboard({ session, onLogout, pharmacyInfo, onRe
               <div className="card p-6">
                 <h3 className="font-bold text-gray-900 mb-4">Pharmacy Logo</h3>
                 {pharmacyInfo?.logo_url && (
-                  <div className="mb-4 p-4 bg-gray-50 rounded-xl flex items-center justify-center">
-                    <img src={`http://localhost:5000${pharmacyInfo.logo_url}`} alt="Current Logo" className="max-h-24 object-contain" />
+                  <div className="mb-4 p-4 bg-gray-50 rounded-xl flex items-center justify-center gap-4">
+                    <PharmacyLogo logoUrl={pharmacyInfo.logo_url} size={72} shape="rounded" />
+                    <div className="text-left">
+                      <p className="text-sm font-bold text-gray-900">{pharmacyInfo?.name}</p>
+                      <p className="text-xs text-gray-400 mt-0.5">Current active logo</p>
+                    </div>
                   </div>
                 )}
                 <form onSubmit={handleLogoUpload} className="flex flex-col gap-4">

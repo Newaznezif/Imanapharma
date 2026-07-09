@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import logo from './assets/logo.png';
 import { Lock, ArrowLeft } from 'lucide-react';
 import LandingPage from './components/LandingPage';
 import { LanguageSelector } from './shared/i18n';
 import ManagerDashboard from './components/ManagerDashboard';
 import PharmacistWorkspace from './components/PharmacistWorkspace';
 import ChangePasswordScreen from './components/ChangePasswordScreen';
+import PharmacyLogo from './shared/PharmacyLogo';
 
 export interface UserSession {
   token: string;
@@ -192,11 +192,7 @@ export default function App() {
             {/* Logo and title */}
             <div className="text-center">
               <div className="flex justify-center mb-4">
-                <div className="w-16 h-16 rounded-full bg-white border border-gray-150 shadow-sm flex items-center justify-center overflow-hidden shrink-0">
-                  <img src={`http://localhost:5001${pharmacyInfo.logo_url}`} alt="Pharmacy Logo" className="w-full h-full object-contain" onError={(e) => {
-                    (e.target as HTMLImageElement).src = logo;
-                  }} />
-                </div>
+                <PharmacyLogo logoUrl={pharmacyInfo.logo_url} size={72} shape="circle" />
               </div>
               <h1 className="text-xl font-bold text-gray-900 tracking-tight">{pharmacyInfo.name}</h1>
               <p className="text-xs text-gray-400 font-medium mt-1">Management Portal Log In</p>

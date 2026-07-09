@@ -32,7 +32,12 @@ app.use('/api/', csrfMiddleware);
 
 // ── Static Files ─────────────────────────────────────────────────────────────
 // Serve uploads folder as static files
-app.use('/uploads', express.static(path.join(__dirname, '../../uploads')));
+// Serve uploads folder with explicit CORS headers so the frontend (port 3000) can load images
+app.use('/uploads', (req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+  next();
+}, express.static(path.join(__dirname, '../../uploads')));
 
 // ── Health Check ─────────────────────────────────────────────────────────────
 app.get('/health', (req, res) => {

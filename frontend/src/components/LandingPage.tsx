@@ -5,6 +5,7 @@ import {
   Pill, Leaf, Microscope, Sparkles, Menu, X, ArrowRight,
 } from 'lucide-react';
 import { useI18n, LanguageSelector } from '../shared/i18n';
+import PharmacyLogo from '../shared/PharmacyLogo';
 
 interface LandingPageProps {
   onNavigateToLogin: () => void;
@@ -16,31 +17,6 @@ interface LandingPageProps {
     logo_url: string;
   };
 }
-
-// ── Logo component with graceful fallback ─────────────────────────────────────
-function Logo({ logoUrl, size = 40 }: { logoUrl: string; size?: number }) {
-  const [err, setErr] = useState(false);
-  if (err) {
-    return (
-      <div
-        style={{ width: size, height: size }}
-        className="rounded-full bg-teal-600 flex items-center justify-center text-white font-bold text-lg shrink-0"
-      >
-        I
-      </div>
-    );
-  }
-  return (
-    <img
-      src={`http://localhost:5001${logoUrl}`}
-      alt="Imana Pharmacy Logo"
-      style={{ width: size, height: size }}
-      className="rounded-full object-contain shrink-0 bg-white border border-gray-100"
-      onError={() => setErr(true)}
-    />
-  );
-}
-
 
 // ── Main Component ────────────────────────────────────────────────────────────
 export default function LandingPage({ onNavigateToLogin, pharmacyInfo }: LandingPageProps) {
@@ -154,7 +130,7 @@ export default function LandingPage({ onNavigateToLogin, pharmacyInfo }: Landing
 
           {/* Brand */}
           <div className="flex items-center gap-2.5 shrink-0">
-            <Logo logoUrl={pharmacyInfo.logo_url} size={38} />
+            <PharmacyLogo logoUrl={pharmacyInfo.logo_url} size={38} shape="circle" />
             <div className="leading-none">
               <div className="font-extrabold text-base text-gray-900 tracking-tight">IMANA</div>
               <div className="text-[10px] font-semibold text-teal-600 tracking-widest uppercase">Pharmacy</div>
@@ -517,7 +493,7 @@ export default function LandingPage({ onNavigateToLogin, pharmacyInfo }: Landing
             {/* Brand column */}
             <div className="flex flex-col gap-4 md:col-span-1">
               <div className="flex items-center gap-2.5">
-                <Logo logoUrl={pharmacyInfo.logo_url} size={36} />
+                <PharmacyLogo logoUrl={pharmacyInfo.logo_url} size={36} shape="circle" />
                 <div>
                   <div className="font-extrabold text-white text-base tracking-tight">IMANA</div>
                   <div className="text-[10px] font-semibold text-teal-400 tracking-widest uppercase">Pharmacy</div>
