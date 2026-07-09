@@ -1,23 +1,13 @@
 /**
  * PharmacyLogo — shared component used in every header / sidebar / profile.
- * Serves the real logo.png from the backend /uploads directory.
+ * Uses /logo.png served from the frontend public folder (copied from uploads/logo.png).
  * Falls back to a styled pill icon if the image is unavailable.
  */
+import { useState } from 'react';
 import { Pill } from 'lucide-react';
 
-const BACKEND = 'http://localhost:5001';
-
-/** Build the absolute URL for whatever logo_url comes from the API */
-export function resolveLogoUrl(logo_url?: string | null): string {
-  if (!logo_url) return `${BACKEND}/uploads/logo.png`;
-  // Already absolute
-  if (logo_url.startsWith('http')) return logo_url;
-  // Relative path — prefix the backend origin
-  return `${BACKEND}${logo_url.startsWith('/') ? '' : '/'}${logo_url}`;
-}
-
 interface PharmacyLogoProps {
-  /** The logo_url field from pharmacyInfo / settings API */
+  /** Optional — kept for API compatibility but the real file is always /logo.png */
   logoUrl?: string | null;
   /** Diameter in px (used for both width and height). Default 40 */
   size?: number;
@@ -30,15 +20,15 @@ interface PharmacyLogoProps {
 }
 
 export default function PharmacyLogo({
-  logoUrl,
   size = 40,
   className = '',
   shape = 'circle',
   bordered = true,
 }: PharmacyLogoProps) {
+  const [failed, setFailed] = useState(false);
+
   const shapeClass =
     shape === 'circle' ? 'rounded-full' : shape === 'rounded' ? 'rounded-xl' : 'rounded-md';
-
   const borderClass = bordered ? 'border border-gray-200 shadow-sm' : '';
 
   return (
@@ -46,25 +36,18 @@ export default function PharmacyLogo({
       className={`bg-white ${shapeClass} ${borderClass} flex items-center justify-center overflow-hidden shrink-0 ${className}`}
       style={{ width: size, height: size }}
     >
-      <img
-        src={resolveLogoUrl(logoUrl)}
-        alt="Imana Pharmacy Logo"
-        className="w-full h-full object-contain p-0.5"
-        onError={(e) => {
-          // On load failure — hide img and show pill icon fallback
-          const img = e.currentTarget;
-          img.style.display = 'none';
-          const fallback = img.nextElementSibling as HTMLElement | null;
-          if (fallback) fallback.style.display = 'flex';
-        }}
-      />
-      {/* Fallback icon (hidden by default, shown when img fails) */}
-      <span
-        style={{ display: 'none', width: '100%', height: '100%' }}
-        className="items-center justify-center text-blue-600"
-      >
-        <Pill size={Math.round(size * 0.5)} />
-      </span>
+      {!failed ? (
+        <img
+          src="/logo.png"
+          alt="Imana Pharmacy Logo"
+          className="w-full h-full object-contain p-0.5"
+          onError={() => setFailed(true)}
+        />
+      ) : (
+        <span className="flex items-center justify-center text-blue-600" style={{ width: '100%', height: '100%' }}>
+          <Pill size={Math.round(size * 0.5)} />
+        </span>
+      )}
     </div>
   );
 }
